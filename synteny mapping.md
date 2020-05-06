@@ -22,3 +22,5 @@ try previous version
 
 
 ## using rgaat locally, this takes gf3 anf fna files 
+
+generate alignment of old to new using bowti2-2.4.1-linux-x86_64
