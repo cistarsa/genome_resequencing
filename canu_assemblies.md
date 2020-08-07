@@ -21,10 +21,16 @@ etc. etc.
 
 ### remap Ldecv2 genes using minimap2 on CHTC, interactively?:
 ```bash
+
+git clone https://github.com/lh3/minimap2
+cd minimap2 && make
+
 bash-4.2$ ./minimap2-2.17_x64-linux/minimap2 -x asm10 (varied) F1-haplotypePF.contigs_v2.fasta GCF_000500325.1_Ldec_2.0_cds_from_genomic.fna -o F1_PF_Ld2_CDS-asm10.pah
 
 for f in *paf; do for j in `cat "$f" | awk '{print $1}' | wc -l`; do for z in `cat "$f" | awk '{print $1}' | sort -u | wc -l`; do for q in `cat "$f" | awk '{print $6}' | sort -u | wc -l`;
 do echo "$f" hits "$j" unique "$z" scaffs "$q" ; done; done; done; done
+
+ash-4.2$ ./minimap2-2.17_x64-linux/minimap2 -x asm10 (varied) F1-haplotypePF.contigs_v2.fasta GCF_000500325.1_Ldec_2.0_cds_from_genomic.fna -o F1_PF_Ld2_CDS-asm10.paf
 
 ```
 
