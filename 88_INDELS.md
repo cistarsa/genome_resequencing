@@ -42,6 +42,8 @@ tar -xzf $ENVNAME.tar.gz -C $ENVDIR
 
 ./align/bin/GraphAligner 
 
+./bin/GraphAligner -g Ldec_kansasRef/Ldec_Kansas_ref.gfa -f CPBWGS_54_CTGAAGCT-TAATCTTA_L006_R1_001.fastq.gz CPBWGS_54_CTGAAGCT-TAATCTTA_L006_R2_001.fastq.gz -a 54.gam --seeds-minimizer-density 5 --all-alignments -b 1
+
 ##
 
 sed 's/s//g'
