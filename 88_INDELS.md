@@ -29,6 +29,7 @@ conda deactivate
 conda pack -n align
 ```
 2) then create bash file
+```bash
 #!/bin/bash
 # Assembles Nanopore reads for nebria riversi genome
 
@@ -49,8 +50,12 @@ tar -xzf $ENVNAME.tar.gz -C $ENVDIR
 sed 's/s//g'
 /vg convert -g Ldec_Kansas_ref.gfa
 
+## error:
+
 perl NovoGraph/scripts/FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile AlignmentInput.txt.sortedWithHeader --referenceFasta F_Kansas_contigs.fasta --outputFile forMAFFT.sam --outputTruncatedReads truncatedReads --outputReadLenghts postGlobalAlignment_readLengths
 Can't locate List/MoreUtils.pm in @INC (@INC contains: /usr/local/lib64/perl5 /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at NovoGraph/scripts/FIND_GLOBAL_ALIGNMENTS.pl line 11.
 BEGIN failed--compilation aborted at NovoGraph/scripts/FIND_GLOBAL_ALIGNMENTS.pl line 11.
+```
+  
 
 
