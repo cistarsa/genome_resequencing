@@ -57,5 +57,35 @@ Can't locate List/MoreUtils.pm in @INC (@INC contains: /usr/local/lib64/perl5 /u
 BEGIN failed--compilation aborted at NovoGraph/scripts/FIND_GLOBAL_ALIGNMENTS.pl line 11.
 ```
   
+try running with miniconda to resolve error, reinstall conda in job and run?
+
+bash-4.2$ tar -xzf NovoGraph.tgz 
+bash-4.2$ bash Miniconda3-latest-Linux-x86_64.sh 
+bash-4.2$ miniconda3/bin/conda config --append channels conda-forge
+miniconda3/bin/conda install -c bioconda/label/cf201901 perl-list-moreutils
+
+###installing/running on macbook
+
+1) install samtools from tarball, unzip (tar -xf) 
+
+perl NovoGraph/scripts/FIND_GLOBAL_ALIGNMENTS.pl \ 
+                              --alignmentsFile AlignmentInput.txt.sortedWithHeader \
+                              --referenceFasta F_Kansas_contigs.fasta \
+                              --outputFile forMAFFT.sam \
+                              --outputTruncatedReads truncatedReads \
+                              --samtools_path . \
+                              --outputReadLengths postGlobalAlignment_readLengths
+
+perl FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile ../intermediate_files/AlignmentInput.sortedWithHeader 
+                               --referenceFasta GRCh38_full_plus_hs38d1_analysis_set_minus_alts.fa 
+                               --outputFile forMAFFT.sam 
+                               --outputTruncatedReads ../intermediate_files/truncatedReads 
+                               --outputReadLengths ../intermediate_files/postGlobalAlignment_readLengths
+
+
+## OK lets do cactus to generate MFA, and then vg:
+
+LI, MD, KS, OR
+
 
 
