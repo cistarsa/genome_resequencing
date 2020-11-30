@@ -87,5 +87,69 @@ perl FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile ../intermediate_files/AlignmentI
 
 LI, MD, KS, OR
 
+## docker image on CHTC
+
+```bash
+#!/bin/bash
+
+#tar -xzf tigs.tgz
+mkdir tigs
+mv *fa tigs
+mv *fasta tigs
+cactus ldec_tigs tigs.txt ldecs.hal
+ls -lhS
+
+chmod +x hal2vg
+./hal2vg ldecs.hal --inMemory --chop 32 --progress > ldecs_hal2vg.pg
+
+vg index ldecs_hal2vg.pg -x ldecs_hal2vg.xg
+
+mkdir ldecs_hals_vg
+cp -r jobs ldecs_hals_vg
+cp *.hal ldecs_hals_vg
+cp *.pg ldecs_hals_vg
+cp *.xg ldecs_hals_vg
+tar -czf ldecs_hals_vg.tgz ldecs_hals_vg
+
+exit
+```
+submit:
+```bash
+universe = docker
+log = doc_ldec.log
+error = doc_ldec.err
+docker_image = quay.io/comparative-genomics-toolkit/cactus:v1.2.3
+executable = docker_cactus.sh
+output = doc_ldec.out
+
+## Specify that HTCondor should transfer files to and from the
+##  computer where each job runs. The last of these lines *would* be
+##  used if there were any other files needed for the executable to run.
+should_transfer_files = YES
 
 
+when_to_transfer_output = ON_EXIT
+
+#transfer_input_files = hal2vg, tigs.txt, /staging/zcohen3/zcohen3/tigs.tgz
+#transfer_input_files = http://proxy.chtc.wisc.edu/SQUID/chtc/python36.tar.gz,  Miniconda3-latest-Linux-x86_64.sh, AlignmentInput.txt.sortedWithHeader, sam2fasta.py, vg, mafft, /staging/zcohen3/zcohen3/F_Kansas_contigs.fasta, /staging/zcohen3/MmdForFLI_contigs.fa, /staging/zcohen3/allContigs_unsorted.bam, samtools, NovoGraph.tgz
+transfer_input_files = vg, tigs.txt, hal2vg, /staging/zcohen3/zcohen3/F_Kansas_contigs.fasta, /staging/zcohen3/zcohen3/F_Oregon_contigs.fasta, /staging/zcohen3/zcohen3/Ldec_2018_redundas_allpaths.fa, /staging/zcohen3/zcohen3/M_MD_contigs.fasta
+#
+## IMPORTANT! Require execute servers that have Gluster and CentOS 7
+requirements = (OpSysMajorVer == 7)
+
+## Tell HTCondor what amount of compute resources
+##  each job will need on the computer where it runs.
+request_cpus = 4
+request_memory = 16GB
+request_disk = 8GB
+
+# Tell HTCondor to run 1 instance of this job:
+queue
+```
+## tigs.txt:
+(Ldec_2018_redundas_allpaths.fa:1,M_MD_contigs.fasta:1,(F_Oregon_contigs.fasta:1,(F_Kansas_contigs.fasta:1):1):1);
+
+F_Kansas_contigs.fasta tigs/
+F_Oregon_contigs.fasta tigs/
+Ldec_2018_redundas_allpaths.fa tigs/
+M_MD_contigs.fasta tigs/
