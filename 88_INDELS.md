@@ -153,3 +153,7 @@ F_Kansas_contigs.fasta tigs/
 F_Oregon_contigs.fasta tigs/
 Ldec_2018_redundas_allpaths.fa tigs/
 M_MD_contigs.fasta tigs/
+
+
+## soft repeat mask using dfam.h5
+
