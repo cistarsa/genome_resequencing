@@ -156,4 +156,54 @@ M_MD_contigs.fasta tigs/
 
 
 ## soft repeat mask using dfam.h5
+install rmblast, trf database and dfam on CHTC @/staging/zcohen3/. build repeatmasker
+h5py: https://docs.h5py.org/en/latest/build.html
+rmblast: http://www.repeatmasker.org/rmblast-2.10.0+-x64-linux.tar.gz
+trf: http://tandem.bu.edu/trf/trf409.linux64.download.html
+dfam (15.9G): http://www.dfam.org/
+
+#untar python38:
+tar -xzf python38.tar.gz
+export PATH=$PWD/python/bin:$PATH
+#set path to python, install hy5
+mkdir rptMsk
+#python3 -m pip install --target=$PWD/rptMsk
+
+python3 -m pip install h5py
+#/RepeatMasker h5py
+export PATH=$PWD/rptMsk/RepeatMasker:$PATH
+#mv repeatmasker
+cp RepeatMasker-open* rptMsk/
+cd rptMsk
+gunzip RepeatMask*
+
+#mv prereqs:
+#dfam 83G:
+gunzip Dfam.h5.gz 
+mv Dfam.h5 rptMsk/RepeatMasker/Libraries/
+#trf(executable): 
+cp trf* rptMsk/
+#repeatmodeller:
+tar -xzf rmblast-2.10.0+-x64-linux.tar.gz 
+
+export PATH=$PWD/rptMsk:$PATH
+
+mv Dfam.h5 repeatmsk/RepeatMasker/Libraries/
+
+```bash
+##trf path
+/var/lib/condor/execute/slot1/dir_6792/repeatmsk/trf409.linux64
+/var/lib/condor/execute/slot1/dir_6792/repeatmsk/rmblast-2.10.0/bin/
+he program is installed with a the following repeat libraries:
+Database: Dfam
+Version: 3.2
+Date: 2020-07-02
+
+Dfam - A database of transposable element (TE) sequence alignments and HMMs.
+
+Total consensus sequences: 273693
+Total HMMs: 273655
+```
+
+## finally build repeatmasker, properly:
 
