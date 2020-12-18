@@ -39,4 +39,24 @@ mv 24_*bam mex_ref/
 tar -czf mex_ref.tgz mex_ref/
 
 mv mex_ref.tgz /staging/zcohen3/
+
+## part II (ran interactively)
+tar -xzf mex_ref.tgz
+tar -xzf build_bcf.tgz
+tar -xzf tabix-0.2.6_bld.tgz
+
+./samtools faidx M_MD_contigs2.fasta
+
+./build/bin/bcftools mpileup -Ou -f M_MD_contigs2.fasta mex_ref/24_sorted_Mexi.bam | ./build/bin/bcftools call -Ou -mv | ./build/bin/bcftools norm -f M_MD_contigs2.fasta -Oz -o output.vcf.gz
+#./build/bin/bcftools mpileup -Ou -f M_MD_contigs2.fasta mex_ref/24_sorted_Mexi.bam ò ./build/bin/bcftools call -Ou -mv ò ./build/bin/bcftools norm -f M_MD_contigs2.fasta -Oz -o output.vcf.gz
+#compressed? yes
+#./tabix-0.2.6/bgzip -c output.vcf > output.vcf.gz
+
+#index
+./tabix-0.2.6/tabix output.vcf.gz
+
+#consensus fasta
+./build/bin/bcftools consensus -f M_MD_contigs2.fasta output.vcf.gz > Mexi_24.fasta
+scp Mexi_24.fasta /staging/zcohen3/
+
 ```
