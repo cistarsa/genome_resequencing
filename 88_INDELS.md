@@ -205,5 +205,29 @@ Total consensus sequences: 273693
 Total HMMs: 273655
 ```
 
-## finally build repeatmasker, properly:
+#### finally build repeatmasker, properly:
 
+### update 12/21/20:
+
+## retry again using minigraph on chtc:
+```bash
+## rename all headers so they're unique: sed -i2 's/>/>F_KS_/g' F_Kansas_contigs_msked.fasta (ex)
+
+./minigraph -xggs -t16 F_Kansas_contigs_mskd.fasta Mexi_24.fasta M_MD_contigs_mskd.fasta F_Oregon_contigs_mskd.fasta Ldec_2018_redundas_allpaths_mskd.fasta > Ldec_KSref_2.gfa
+
+## remove leading s's at nodes, need to be integers:
+sed -i1 's/s//g' Ldec_KSref_2.gfa 
+sed -i2 's/caff/scaff/g' Ldec_KSref_2.gfa
+
+## generate vg graph:
+bash-4.2$ ./vg convert -g -a Ldec_KSref_2.gfa > graph.vg2
+## index:
+bash-4.2$ 
+./vg index -x Ldec_vg.xg -g Ldec_vg.gcsa Ldec_vg.vg
+./vg index graph.vg2 -x graph_vg2.xg
+
+/vg index -x Ldec_vg.xg -g Ldec_vg.gcsa Ldec_vg.vg
+Found kmer with offset >= 1024. GCSA2 cannot handle nodes greater than 1024 bases long. To enable indexing, modify your graph using `vg mod -X 256 x.vg >y.vg`. CTGAAAAAAATCGTCA	939878:1024939878:1040
+bash-4.2$ vg mod -X 256 Ldec_vg.vg > Ldec_vg2.vg
+bash: vg: command not found
+bash-4.2$ ./vg mod -X 256 Ldec_vg.vg > Ldec_vg2.vg
