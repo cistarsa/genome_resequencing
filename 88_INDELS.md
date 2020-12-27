@@ -246,3 +246,20 @@ rm -f graph.pruned.vg```
 # add forge to channel
 #conda config --append channels conda-forge
 molecularecology@molecular-ecology:~/Documents/ZachCohen/SibeliaZ/sibeliaz_out$ ./miniconda/bin/conda install msaconverter
+
+```
+### variantgraph generate vcfs:
+```bash
+#on augmented graph with cp13 variants:
+# augment map with cp13 variants:
+./vg augment Ldec_vg2.vg cp13.gam -A cp13_aug.gam > cp13_aug.vg
+# pack for genome gam
+./vg pack -x Ldec_vg.xg -g cp13.gam -Q 5 -o aln_13.pack
+# vcf for genome graph calls:
+./vg call Ldec_vg.xg -k aln_13.pack > graph_calls.vcf
+#index augmented vg
+./vg index -p cp13_aug.vg -x cp13_aug.xg
+# pack augmented gam 
+./vg pack -x cp13_aug.xg -g cp13_aug.gam -Q 5 -o aln_aug_13.pack
+#vcf
+./vg call cp13_aug.xg -k aln_aug_13.pack > calls_13.vcf
