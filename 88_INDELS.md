@@ -231,3 +231,18 @@ Found kmer with offset >= 1024. GCSA2 cannot handle nodes greater than 1024 base
 bash-4.2$ vg mod -X 256 Ldec_vg.vg > Ldec_vg2.vg
 bash: vg: command not found
 bash-4.2$ ./vg mod -X 256 Ldec_vg.vg > Ldec_vg2.vg
+#pruned 
+
+vg prune graph.vg > graph.pruned.vg
+cohen@denali:~/vg/variant_graph_refs$ nohup -c "./vg index -g graph.gcsa graph.pruned.vg -b /data2/tmp/ -p" &
+rm -f graph.pruned.vg```
+
+### sibelia to generate MAF, MAF-> MSA, MSA-VG (use vg -construct)
+
+```bash
+
+#missing sibelia code, but download msaconverter
+
+# add forge to channel
+#conda config --append channels conda-forge
+molecularecology@molecular-ecology:~/Documents/ZachCohen/SibeliaZ/sibeliaz_out$ ./miniconda/bin/conda install msaconverter
