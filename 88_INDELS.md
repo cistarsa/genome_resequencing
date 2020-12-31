@@ -263,3 +263,7 @@ molecularecology@molecular-ecology:~/Documents/ZachCohen/SibeliaZ/sibeliaz_out$ 
 ./vg pack -x cp13_aug.xg -g cp13_aug.gam -Q 5 -o aln_aug_13.pack
 #vcf
 ./vg call cp13_aug.xg -k aln_aug_13.pack > calls_13.vcf
+
+```
+
+### 12/31/20 use seqwish on minimap2 (docker image), then try smoothxg (also docker)
