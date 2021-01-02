@@ -267,3 +267,39 @@ molecularecology@molecular-ecology:~/Documents/ZachCohen/SibeliaZ/sibeliaz_out$ 
 ```
 
 ### 12/31/20 use seqwish on minimap2 (docker image), then try smoothxg (also docker)
+
+```docker
+on denali, create dockerfile:
+#df:
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+  dialog \
+  apt-utils \
+  build-essential \
+  cmake \
+  libssl-dev \
+  libffi-dev \
+  python3-distutils \
+  python3-dev \
+  git \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN git clone --recursive https://github.com/ekg/smoothxg.git
+
+RUN cd smoothxg && cmake -H. -Bbuild && cmake --build build -- -j 4
+
+ENV PATH="/smoothxg/bin:${PATH}"
+cohen@denali:~/smooothxg$ sudo docker build -t kingcohn1/smoothxg .
+
+#push image, not working. run on server:
+#docker run -ti -v ${PWD}:/tmp DOCKER_IMAGE /bin/bash
+
+docker run -it -v ${PWD}:/tmp kingcohn1/smoothxg /bin/bash
+
+root@ec1ff8811f00:/tmp# rm nohup.out 
+root@ec1ff8811f00:/tmp# nohup smoothxg -g Ldec_all5.gfa -V  -o smoothed_Ldec_all5.gfa -m msa_Ldec_all5.msa
+/home/cohen/vg/variant_graph_refs/Ldec_all5.gfa
+```
