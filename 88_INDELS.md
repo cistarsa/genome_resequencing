@@ -339,3 +339,16 @@ root@ec1ff8811f00:/tmp# nohup smoothxg -g Ldec_all5.gfa -V  -o smoothed_Ldec_all
 ./vg prune first, then 
 
 
+
+# jan 3 run minimap from docker image, convert fastas
+## convert using fasttoolbox:
+#(base) root@35327b611702:/tmp# ./bin/fasta_formatter -i Mexi_24_2.fasta -w 60 > Mexi_60.fasta  
+then
+(base) root@35327b611702:/tmp# minimap2 -cx asm5 F_Kansas_60.fasta M_MD_60.fasta F_Oregon_60.fasta Ldec_2018LI_60.fasta Mexi_60.fasta -o L5.paf -t 16
+
+## now seqwish
+cohen@denali:/data2/zach_data$ docker run -it -v ${PWD}:/tmp hpobiolab/seqwish /bin/bash
+root@bedff1d3e171:/# cat /tmp/*60*fasta > all5_60.fasta
+root@deb766d74a2e:/app# seqwish -t 16 -p /tmp/L5.paf -s all5_60.fasta -g L5.gfa
+
+
