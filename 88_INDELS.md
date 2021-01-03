@@ -267,7 +267,36 @@ molecularecology@molecular-ecology:~/Documents/ZachCohen/SibeliaZ/sibeliaz_out$ 
 ```
 
 ### 12/31/20 use seqwish on minimap2 (docker image), then try smoothxg (also docker)
+## create .paf using minimap2:
+```bash
+#try docker 
+  docker run -it -v ${PWD}:/tmp trinityrnaseq/minimap2 /bin/bash
+./minimap2 -cx asm5 -X F_Kansas_contigs_mskd.fasta F_Oregon_contigs_mskd.fasta Ldec_2018_redundas_allpaths_mskd.fasta M_MD_contigs_mskd.fasta Mexi_24.fasta > Ldec_jan3.paf
+[M::mm_idx_gen::18.455*1.56] collected minimizers
+[M::mm_idx_gen::20.882*1.72] sorted minimizers
+[M::main::20.883*1.72] loaded/built the index for 189 target sequence(s)
+[M::mm_mapopt_update::21.775*1.69] mid_occ = 386
+[M::mm_idx_stat] kmer size: 19; skip: 19; is_hpc: 0; #seq: 189
+[M::mm_idx_stat::22.130*1.68] distinct minimizers: 47960148 (89.11% are singletons); average occurrences: 1.702; average spacing: 10.711
+[M::worker_pipeline::597.931*2.95] mapped 2070 sequences
+[M::worker_pipeline::963.978*2.96] mapped 1443 sequences
+[M::worker_pipeline::1530.914*2.97] mapped 3362 sequences
+[M::worker_pipeline::1699.865*2.97] mapped 23547 sequences
+[M::worker_pipeline::2352.237*2.98] mapped 3921 sequences
+[M::worker_pipeline::2964.404*2.98] mapped 6555 sequences
+[M::worker_pipeline::3950.724*3.02] mapped 61 sequences
+[M::worker_pipeline::4488.707*2.96] mapped 169 sequences
+[M::main] Version: 2.17-r941
+[M::main] CMD: ./minimap2-2.17_x64-linux/minimap2 -ax asm5 -c -L F_Kansas_contigs_mskd.fasta F_Oregon_contigs_mskd.fasta Ldec_2018_redundas_allpaths_mskd.fasta M_MD_contigs_mskd.fasta Mexi_24.fasta
+[M::main] Real time: 4488.749 sec; CPU: 13280.336 sec; Peak RSS: 10.771 GB
+```
+## convert paf to gfa using seqwish, on denali
 
+```bash
+docker run -it -v ${PWD}:/tmp kingcohn1/seqwish:v1 /bin/bash 
+cat /tmp/*fasta > all_5.fasta
+seqwish -t 16 -s all_5.fasta -p /tmp/Ldec_5_1.2.paf -g Ldec_Jan3.gfa
+```
 ```docker
 on denali, create dockerfile:
 #df:
@@ -306,3 +335,7 @@ root@ec1ff8811f00:/tmp# rm nohup.out
 root@ec1ff8811f00:/tmp# nohup smoothxg -g Ldec_all5.gfa -V  -o smoothed_Ldec_all5.gfa -m msa_Ldec_all5.msa
 /home/cohen/vg/variant_graph_refs/Ldec_all5.gfa
 ```
+### try vg construct on large, non-smoothed seqwish gfa ~12G, following this <https://github.com/vgteam/vg/wiki/Index-Construction>
+./vg prune first, then 
+
+
