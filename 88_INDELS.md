@@ -292,6 +292,9 @@ RUN git clone --recursive https://github.com/ekg/smoothxg.git
 RUN cd smoothxg && cmake -H. -Bbuild && cmake --build build -- -j 4
 
 ENV PATH="/smoothxg/bin:${PATH}"
+
+
+## run image:
 cohen@denali:~/smooothxg$ sudo docker build -t kingcohn1/smoothxg .
 
 #push image, not working. run on server:
