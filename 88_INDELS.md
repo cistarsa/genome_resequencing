@@ -347,8 +347,36 @@ then
 (base) root@35327b611702:/tmp# minimap2 -cx asm5 F_Kansas_60.fasta M_MD_60.fasta F_Oregon_60.fasta Ldec_2018LI_60.fasta Mexi_60.fasta -o L5.paf -t 16
 
 ## now seqwish
-cohen@denali:/data2/zach_data$ docker run -it -v ${PWD}:/tmp hpobiolab/seqwish /bin/bash
+cohen@denali:/data2/zach_data$ cat F_Kansas_60.fasta M_MD_60.fasta F_Oregon_60.fasta Ldec_2018LI_60.fasta Mexi_60.fasta > Ldec5.fasta
+cohen@denali:/data2/zach_data$ docker run -it -v ${PWD}:/tmp kingcohn1/seqwish:v1 /bin/bash
+
+root@25fba468773d:/tmp# seqwish -t 16 -s L5.paf -s Ldec5.fasta -g L5.gfa -P
 root@bedff1d3e171:/# cat /tmp/*60*fasta > all5_60.fasta
 root@deb766d74a2e:/app# seqwish -t 16 -p /tmp/L5.paf -s all5_60.fasta -g L5.gfa
 
+## now smoothxg:
+cohen@denali:/data2/zach_data$ docker run -it -v ${PWD}:/tmp kingcohn1/smoothxg /bin/bash
+smoothxg -g L5.gfa -V -o smoothed_L5.gfa -m msa_L5.msa -t 16
 
+## missing L5.gfa (seqwish) and L5.paf (minimap)
+```
+cohen@denali:/data2/zach_data$ sudo find / -name L5*
+wtf
+/usr/share/nagios3/htdocs/contexthelp/L5.html
+/data2/zach_data/seqwish/L5.paf
+/var/lib/docker/aufs/diff/761a10378caf867014a06db18a3478448ffef872e67041783d671688498ee450/L5.gfa
+/var/lib/docker/aufs/diff/761a10378caf867014a06db18a3478448ffef872e67041783d671688498ee450/L5.gfa.prep.gfa
+/var/lib/docker/aufs/diff/a23b92ec3f4d8138df20ff48ce212a7ec4a9e385637b4af4fa7b05ae32c49575/L5.paf
+/var/lib/docker/aufs/diff/0e9b332c853893cc149234fd67bb3203ef21feb5eb1601cb75ce97e0b869e354/app/L5.paf
+/var/lib/docker/aufs/diff/0e9b332c853893cc149234fd67bb3203ef21feb5eb1601cb75ce97e0b869e354/app/L5.fa
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqq
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqi
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqa
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.paf
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqs
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqp
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqn
+/var/lib/docker/aufs/diff/deb766d74a2eb0e779e905c9e7286e2a8a47b6ddaae6cf993dc441be7dec1632/app/L5.gfa.sqi.seqnames.tmp
+
+scp zcohen3@submit-2.chtc.wisc.edu:/staging/zcohen3/L5.paf (#gfa) ./
+```
