@@ -434,7 +434,10 @@ cohen@denali:/data2/zach_data$ for z in `cat ./vg/variant_graph_refs/F_cans_cont
 
 ```gcsa
 #vg index -g all.gcsa $(for i in $(seq 22; echo X; echo Y); do echo chr${i}.pruned.vg; done)
-./vg/variant_graph_refs/vg index -g all.gcsa -p -t 16./test/*pruned.vg
+
+## huge temporary files, create tmp folder
+#mkdir tmp_gcsa 
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg index -b tmp_gcsa/ -g all.gcsa -p -t 16 ./test/*prnd_test.vg
 ```
 
 
