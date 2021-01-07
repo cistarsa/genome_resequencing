@@ -354,7 +354,32 @@ root@25fba468773d:/tmp# seqwish -t 16 -s L5.paf -s Ldec5.fasta -g L5.gfa -P
 root@bedff1d3e171:/# cat /tmp/*60*fasta > all5_60.fasta
 root@deb766d74a2e:/app# seqwish -t 16 -p /tmp/L5.paf -s all5_60.fasta -g L5.gfa
 
-## now smoothxg:
+## now (rebuild) smoothxg docker on chtc:
+```
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+  dialog \
+  apt-utils \
+  build-essential \
+  cmake \
+  libssl-dev \
+  libffi-dev \
+  python3-distutils \
+  python3-dev \
+  git \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN git clone --recursive https://github.com/ekg/smoothxg.git
+
+RUN cd smoothxg && cmake -H. -Bbuild && cmake --build build -- -j 4
+
+ENV PATH="/smoothxg/bin:${PATH}"
+```
+
+
 cohen@denali:/data2/zach_data$ docker run -it -v ${PWD}:/tmp kingcohn1/smoothxg /bin/bash
 smoothxg -g L5.gfa -V -o smoothed_L5.gfa -m msa_L5.msa -t 16
 
