@@ -405,3 +405,37 @@ wtf
 
 scp zcohen3@submit-2.chtc.wisc.edu:/staging/zcohen3/L5.paf (#gfa) ./
 ```
+### before smoothxg, confirm gfa from edyeet->seqwish works:
+
+```bash
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg convert -g -a aln5.gfa > aln5.vg
+
+cohen@denali:/data2/zach_data$ for z in `cat ./vg/variant_graph_refs/F_cans_contigs.list`; do ./vg/variant_graph_refs/vg construct -r F_Kansas_60.fasta aln5.vg -R $z -C > ./test/"$z"_test.vg; done 
+```
+```
+#cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg ids -j $(for z in `cat ./vg/variant_graph_refs/F_cans_contigs.list`; do echo ./test/"$f".vg; done)
+
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg ids -j ./test/*vg
+
+```
+```
+#vg index -x all.xg $(for i in $(seq 1 22; echo X; echo Y); do echo chr${i}.vg; done)
+
+cohen@denali:/data2/zach_data/test$ ./vg/variant_graph_refs/vg index -x aln5_all.xg ./test*vg
+```
+
+```
+# prune
+#for i in $(seq 1 22; echo X; echo Y); do
+#vg prune chr${i}.vg > chr${i}.pruned.vg
+#done
+cohen@denali:/data2/zach_data$ for z in `cat ./vg/variant_graph_refs/F_cans_contigs.list`; do ./vg/variant_graph_refs/vg prune ./test/"$z"_test.vg > ./test/"$z"_prnd_test.vg; done
+```
+
+```gcsa
+#vg index -g all.gcsa $(for i in $(seq 22; echo X; echo Y); do echo chr${i}.pruned.vg; done)
+./vg/variant_graph_refs/vg index -g all.gcsa -p -t 16./test/*pruned.vg
+```
+
+
+
