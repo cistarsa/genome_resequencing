@@ -53,3 +53,42 @@ Successfully tagged kingcohn1/pggb:latest
 Zachary-Cohens-MacBook-2:pggb zacharycohen$ sudo docker push kingcohn1/pggb:latest 
 
 root@524fdab85d5c:/# smoothxg -g aln5.gfa -V -o smoothed_aln5L5.gfa -m msa_alnL5.msa -t 16
+```
+```
+#index:
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg index -x all.xg -t 16 -p ./test/*vg
+
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg index -b tmp_gcsa/ -g all.gcsa -p -t 16 ./test/*prnd_test.vg
+
+
+
+```#map, took around 5-6hrs 16CPUs:
+
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg map -d all -i -f /data2/CPBWGS/WORKING_DIR/Fastq_files/Decemlineata/CPBWGS_13_TCCGGAGA-AGGCGAAG_L003_R1_001.fastq.gz -f /data2/CPBWGS/WORKING_DIR/Fastq_files/Decemlineata/CPBWGS_13_TCCGGAGA-AGGCGAAG_L003_R2_001.fastq.gz -t 16 > all5_13.gam
+```
+```
+#call only variants in graph (among 5)
+#vg pack -x x.xg -g aln.gam -Q 5 -o aln.pack
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg pack -x all.xg -g all5_13.gam -Q 5 -o all5_13.pack
+#vg call x.xg -k aln.pack > graph_calls.vcf
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg call all.xg -k all5_13.pack > graph_calls.vcf
+
+```
+```
+#augment graph back:
+## turn gam to bam:
+
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg augment aln5.vg all5_13.gam -A all5_aug.gam > all_aln5_aug.vg
+
+```
+
+## Using INDELSEEK:
+
+### first, sort bam:
+(use old samtools) 
+samtools sort aln5_13.bam -o sorted_aln5_13 > sorted_aln5_13.bam
+### then, index bam:
+samtools index sorted_aln5_13.bam 
+
+```cohen@denali:/data2/zach_data$ samtools view sorted_aln5_13.bam F_KS_tig00027578_RagTag_RagTag | ./indelseek.pl --refseq F_Kansas_60.fasta --skip_lowqual | tee cp13.complexindel.vcf
+```
