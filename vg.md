@@ -49,3 +49,41 @@ cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg index -t 16 -p -b ./ -
 ```
 
 ## chunk graph by scaffold:
+```
+cohen@denali:/data2/zach_data$ for i in `cat F_Kansas_scaffs.list`; do ./vg/variant_graph_refs/vg prune subgraph_aln5/mod_"$i"_gfa.vg > subgraph_aln5/pruned_mod_"$i"_gfa.vg; done
+
+```
+## map reads to vg:
+
+#cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg map -d all -i -f #/data2/CPBWGS/WORKING_DIR/Fastq_files/Decemlineata/CPBWGS_13_TCCGGAGA-AGGCGAAG_L003_R1_001.fastq.gz -f #/data2/CPBWGS/WORKING_DIR/Fastq_files/Decemlineata/CPBWGS_13_TCCGGAGA-AGGCGAAG_L003_R2_001.fastq.gz -t 16 > all5_13.gam
+
+```
+for base in `cat list.1`; do for gcsa in `ls subgraph_aln5/"$base"*gcsa`; do for xg in `ls subgraph_aln5/"$base"*xg`; do for file in `ls subgraph_aln5/pruned*"$base"*vg`; do for R1 in `ls 88_fastq/*13*R1*`; do for R2 in `ls 88_fastq/*13*R2*`; do if [[ $file == *"$base"* ]] && [[ $gcsa = *"$base"* ]] && [[ $xg == *"$base"* ]]; then ./vg/variant_graph_refs/vg map -x $xg -g $gcsa -i -f $R1 $R2 > "$base"_CP13.bam; fi; done; done; done; done; done; done
+```
+cohen@denali:/data2/zach_data$ mv F_KS_P_RNA_scaffold_10_CP13.bam F_KS_P_RNA_scaffold_10_CP13.gam
+
+## dummy code on one scaffold:
+or base in `cat list.1`; do for gcsa in `ls subgraph_aln5/"$base"*gcsa`; do for xg in `ls subgraph_aln5/"$base"*xg`; do for file in `ls subgraph_aln5/pruned*"$base"*vg`; do for R1 in `ls 88_fastq/*13*R1*`; do for R2 in `ls 88_fastq/*13*R2*`; do if [[ $file == *"$base"* ]] && [[ $gcsa = *"$base"* ]] && [[ $xg == *"$base"* ]]; then ./vg/variant_graph_refs/vg map -x $xg -g $gcsa -i -f $R1 $R2 > "$base"_CP13.gam; fi; done; done; done; done; done; done
+
+## gam to bam to SV's?
+
+# sv's in vcf?
+vg augment x.vg aln.gam -A aug.gam > aug.vg
+
+for base in `cat list.1`; do for file in `ls subgraph_aln5/pruned*"$base"*vg`; do ./vg/variant_graph_refs/vg augment "$file" -A "$base"_CP13.gam > "$base".vg; done
+
+./vg/variant_graph_refs/vg augment subgraph_aln5/mod_F_KS_P_RNA_scaffold_10_gfa.vg F_KS_P_RNA_scaffold_10_CP13.gam > augmented_mod_F_KS_P_RNA_scaffold_10_gfa.vg
+
+## pack variants only in graph:	
+
+vg pack -x x.xg -g aln.gam -Q 5 -o aln.pack
+
+cohen@denali:/data2/zach_data$ ./vg/variant_graph_refs/vg pack -x subgraph_aln5/mod_F_KS_P_RNA_scaffold_10_gfa.vg -g F_KS_P_RNA_scaffold_10_CP13.gam -Q 5 -o aln5c_graph.pack 
+
+##vg call
+vg call x.xg -k aln.pack > graph_calls.vcf
+./vg/variant_graph_refs/vg call subgraph_aln5/mod_F_KS_P_RNA_scaffold_10_gfa.vg -k aln5c_graph.pack > graph_aln5_calls.vcf
+
+
+
+
