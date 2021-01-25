@@ -89,7 +89,7 @@ vg call x.xg -k aln.pack > graph_calls.vcf
 ```
 ## server crashed. run on chtc:
 gcsa construction per scaffold
-```bash
+```bash vg_map_13.sh
 #!/bin/bash
 
 tar -xzf subgraphs_aln5.tgz 
@@ -114,6 +114,38 @@ tar -czf "$dir"_out.tgz "$dir"
 mv "$dir"_out.tgz /staging/zcohen3/gcsa_out/
 exit
 ```
+```bash vg_map_13.sub
+
+universe = vanilla
+log = vg_index_$(sxg).log
+error = vg_index_$(sxg).err
+
+executable = vg_map_13.sh
+#output = yiming_canu_ecoli/yiming_ecoli_assembly.out
+
+## Specify that HTCondor should transfer files to and from the
+##  computer where each job runs. The last of these lines *would* be
+##  used if there were any other files needed for the executable to run.
+#should_transfer_files = YES
+#when_to_transfer_output = ON_EXIT
+transfer_input_files = /staging/zcohen3/F_kansas_scaff.list, /staging/zcohen3/gcsa_directs/$(sxg), /home/zcohen3/VariantGraph/vg
+#samtools-1.11.tar.bz2
+#P_RNA_pmpf_2.fasta, GCF_000500325.1_Ldec_2.0_cds_from_genomic.fna
+#module load GCC/4.9.4
+## IMPORTANT! Require execute servers that have Gluster and CentOS 7
+requirements = (OpSysMajorVer =?= 7)
+
+#+IsBuildJob =true
+## Tell HTCondor what amount of compute resources
+##  each job will need on the computer where it runs.
+request_cpus = 2
+request_memory = 20 GB
+request_disk = 50 GB
+
+# Tell HTCondor to run 1 instance of this job:
+queue sxg from 189_ss.list
+```
+
 ### map reads to vg ./vg/variant_graph_refs/vg map -x $xg -g $gcsa -i -f $R1 $R2 ```
 #for base in `cat list.1`; do for gcsa in `ls subgraph_aln5/"$base"*gcsa`; do for xg in `ls subgraph_aln5/"$base"*xg`; do for file in `ls subgraph_aln5/pruned*"$base"*vg`; do for R1 in `ls 88_fastq/*13*R1*`; do for R2 in `ls 88_fastq/*13*R2*`; do if [[ $file == *"$base"* ]] && [[ $gcsa = *"$base"* ]] && [[ $xg == *"$base"* ]]; then ./vg/variant_graph_refs/vg map -x $xg -g $gcsa -i -f $R1 $R2 > "$base"_CP13.gam; fi; done; done; done; done; done; done
 
