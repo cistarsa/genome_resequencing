@@ -25,3 +25,10 @@ $ docker run -v $(pwd):/data --rm quay.io/vgteam/vg:ci-2785-69b052f68df85d69f80f
 ./vg map -t 16 -x CPB_Feb5_1.30.xg -g CPB_Feb5_1.30.gcsa -i -f CPBWGS_11_R1.fastq.gz -f CPBWGS_11_R2.fastq.gz > CPB_11.gam
 ```
 ## generate bed file with bubbles
+
+
+## map pooled reads to variantgraph
+
+## surject gams to bams
+
+## pooled whole genome sequences -> selection and differentiation popoolation2, pcadapt 
