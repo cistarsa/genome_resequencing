@@ -32,3 +32,26 @@ $ docker run -v $(pwd):/data --rm quay.io/vgteam/vg:ci-2785-69b052f68df85d69f80f
 ## surject gams to bams
 
 ## pooled whole genome sequences -> selection and differentiation popoolation2, pcadapt 
+
+# for example MD_1 generate plink.bed file: 
+```bash
+# normalize
+molecularecology@Chimborazo:/media/Summit/plink$ bcftools norm -Ob -m-any genotypes_CPB_MD_1.vcf > MD_1.norm.bcf
+
+# index
+bcftools index MD_1.norm.bcf
+
+#generate (PLINK v1.90b6.21 64-bit (19 Oct 2020)          www.cog-genomics.org/plink/1.9/)
+./plink --bcf MD_1.norm.bcf --aec --make-bed --out bed_genotypes_MD1
+1 person (0 males, 0 females, 1 ambiguous) loaded from .fam.
+Ambiguous sex ID written to bed_genotypes_MD1.nosex .
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 1 founder and 0 nonfounders present.
+Calculating allele frequencies... done.
+2095554 variants and 1 person pass filters and QC.
+Note: No phenotypes present.
+--make-bed to bed_genotypes_MD1.bed + bed_genotypes_MD1.bim +
+bed_genotypes_MD1.fam ... done.
+
+## upload to R, PCAdapt, shared variant sites?
+```
