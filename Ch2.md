@@ -41,12 +41,21 @@ molecularecology@Chimborazo:/media/Summit/zach_vg/minigraph$ ../vg/gfatools/gfat
 [M::main] Real time: 52.191 sec; CPU: 13.615 sec
 
 ```
-
-## map OGS to linear .fa
+## map OGS3 to linear.fa in minimap2
 ```bash
+#1 
+./minimap2/minimap2 -x splice CPB_Mar18_linear.fa Lepdec_OGS2.1.2.mfa > OGS3_CPB_Mar18.paf
+
+#2
 
 ```
 
+## pull reference alleles/paths:
+```bash 
+molecularecology@Chimborazo:/media/Summit/zach_vg/minigraph$ ./minigraph/minigraph -xasm --call CPB_Mar18.gfa F_Kansas_60.fasta > F_KS_60.bed
+
+...etc
+```
 
 ## gfa to vg (vg1.31.0 Caffaraccia
 ```bash
@@ -78,7 +87,7 @@ Serialized the graph: 842440 nodes, 1147270 edges
 ./vg index -x mod_CPB_Mar18.pruned.xg mod_CPB_Mar18.pruned.vg
 
 # index = gcsa
-./vg index -g mod_CPB_Feb5.pruned.gcsa mod_CPB_Feb5.pruned.vg -t 32 -b ./ -p
+./vg index -g mod_CPB_Mar18.pruned.gcsa mod_CPB_Mar18.pruned.vg -t 32 -b ./ -p
 
 # map 
 ./vg map -t 16 -x CPB_Feb5_1.30.xg -g CPB_Feb5_1.30.gcsa -i -f CPBWGS_11_R1.fastq.gz -f CPBWGS_11_R2.fastq.gz > CPB_11.gam
