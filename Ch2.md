@@ -70,8 +70,8 @@ nodes	842440
 edges	1147270
 length	1068342500
 
-# prune 
-./vg prune -r -p -t 32 CPB_Mar18.vg > CPB_Mar18.pruned.vg
+# prune messed up graph
+#./vg prune -r -p -t 32 CPB_Mar18.vg > CPB_Mar18.pruned.vg
 Original graph CPB_Mar18.vg: 842440 nodes, 1147270 edges
 Built a temporary XG index
 Removed all paths
@@ -80,19 +80,43 @@ Removed small subgraphs: 842440 nodes, 1147270 edges
 Restored graph: 842440 nodes
 Serialized the graph: 842440 nodes, 1147270 edges
 
-# modify for large bubbles:
-./vg mod -X 256 CPB_Mar18.pruned.vg > mod_CPB_Mar18.pruned.vg
+# modify for large bubbles (redid):
+molecularecology@Chimborazo:/media/Summit/zach_vg/minigraph$ ./vg mod -X 256 CPB_Mar18.vg > 256_CPB_Mar18.vg
 
 #index = xg
-./vg index -x mod_CPB_Mar18.pruned.xg mod_CPB_Mar18.pruned.vg
+./vg index -x 256_CPB_Mar18.xg -g 256_CPB_Mar18.gcsa -t 32 -b ./ -p 256_CPB_Mar18.vg
 
-# index = gcsa
-./vg index -g mod_CPB_Mar18.pruned.gcsa mod_CPB_Mar18.pruned.vg -t 32 -b ./ -p
+# index = gcsa #./vg index -g mod_CPB_Mar18.pruned.gcsa mod_CPB_Mar18.pruned.vg -t 32 -b ./ -p
 
 # map 
-./vg map -t 16 -x CPB_Feb5_1.30.xg -g CPB_Feb5_1.30.gcsa -i -f CPBWGS_11_R1.fastq.gz -f CPBWGS_11_R2.fastq.gz > CPB_11.gam
+./vg map -t 24 -d /media/Summit/zach_vg/minigraph/256_CPB_Mar18 -i -f CPBWGS_12_TCCGGAGA-GGCTCTGA_L003_R1_001.fastq.gz_CLEAN.fq -f CPBWGS_12_TCCGGAGA-GGCTCTGA_L003_R2_001.fastq.gz_CLEAN.fq > CPB_12_mar256.gam
 ```
+## call variants on CPB12:
+```bash
+# map:
+ for j in `cat CPBWGS_list.1`; do for R1 in `ls "$j"*R1*`; do for R2 in `ls "$j"*R2*`; do if [[ "$R1" == "$j"*R1* ]] && [[ "$R2" == "$j"*R2* ]]; then /media/Summit/zach_vg/minigraph/vg map -d /media/Summit/zach_vg/minigraph/mod_CPB_Mar18.pruned -t 16 -f "$R1" -f "$R2" > "$j".gam; fi; done; done; done
+ 
+# augment (not for pooled):
+/media/Summit/zach_vg/minigraph/vg augment /media/Summit/zach_vg/minigraph/mod_CPB_Mar18.pruned.vg CPBWGS_12_TCCGGAGA-GGCTCTGA.gam -A  2aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.gam > 2aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg
 
+## augment (pooled)
+#/media/Summit/zach_vg/minigraph/vg augment /media/Summit/zach_vg/minigraph/mod_CPB_Mar18.pruned.vg CPBWGS_12_TCCGGAGA-GGCTCTGA.gam -m 4 -q 5 -A  aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.gam > aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg
+
+# index:
+/media/Summit/zach_vg/minigraph/vg index -t 8 aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg -x aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -b ./ -p 
+
+# pack (NO QUAL FILTER)
+#vg pack -x CPB_MD_1.gam.vg.xg -g filtered_aug_CPB_MD_1.gam.gam -o filtered_CPB_MD_1.pack
+/media/Summit/zach_vg/minigraph/vg pack -x aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -g aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.gam -o aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.pack
+
+# pack (QUAL FILTER 5)
+/media/Summit/zach_vg/minigraph/vg pack -x aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -g aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.gam -o aug_Q5_CPBWGS_12_TCCGGAGA-GGCTCTGA.pack -Q 5
+
+# call (NO QUAL FILTER):
+/media/Summit/zach_vg/minigraph/vg call aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -k aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.pack -a > genotypes_aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vcf
+
+# call (QUAL FILTER 5):
+/media/Summit/zach_vg/minigraph/vg call aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -k aug_Q5_CPBWGS_12_TCCGGAGA-GGCTCTGA.pack -a > genotypes_aug_ Q5_CPBWGS_12_TCCGGAGA-GGCTCTGA.vcf
 
 ## map pooled reads to variantgraph
 
