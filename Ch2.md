@@ -90,6 +90,24 @@ molecularecology@Chimborazo:/media/Summit/zach_vg/minigraph$ ./vg mod -X 256 CPB
 
 # map 
 ./vg map -t 24 -d /media/Summit/zach_vg/minigraph/256_CPB_Mar18 -i -f CPBWGS_12_TCCGGAGA-GGCTCTGA_L003_R1_001.fastq.gz_CLEAN.fq -f CPBWGS_12_TCCGGAGA-GGCTCTGA_L003_R2_001.fastq.gz_CLEAN.fq > CPB_12_mar256.gam
+
+#augment media/Summit/zach_vg/minigraph/vg augment /media/Summit/zach_vg/minigraph/mod_CPB_Mar18.pruned.vg CPBWGS_12_TCCGGAGA-GGCTCTGA.gam -A  2aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.gam > 2aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg 
+
+./vg augment -t 24 /media/Summit/zach_vg/minigraph/256_CPB_Mar18.vg CPB_12_mar256.gam -A aug_CPB_12_mar256.gam > aug_CPB_12_mar256.vg
+
+## confirm paths in vg
+./vg paths -L -v aug_CPB_12_mar256.vg
+(success)
+
+#index
+./vg index -t 24 aug_CPB_12_mar256.vg -x aug_CPB_12_mar256.vg.xg -b ./ -p 
+
+#pack 
+./vg pack -x aug_CPB_12_mar256.vg.xg -g aug_CPB_12_mar256.gam -o aug_CPB_12_mar256.pack
+
+#call
+./vg call aug_CPB_12_mar256.vg.xg -k aug_CPB_12_mar256.pack -a > genotypes_aug_CPB_12_mar256.vcf
+
 ```
 ## call variants on CPB12:
 ```bash
