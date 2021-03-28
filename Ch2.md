@@ -135,8 +135,11 @@ molecularecology@Chimborazo:/media/Summit/zach_vg/minigraph$ ./vg mod -X 256 CPB
 
 # call (QUAL FILTER 5):
 /media/Summit/zach_vg/minigraph/vg call aug_CPBWGS_12_TCCGGAGA-GGCTCTGA.vg.xg -k aug_Q5_CPBWGS_12_TCCGGAGA-GGCTCTGA.pack -a > genotypes_aug_ Q5_CPBWGS_12_TCCGGAGA-GGCTCTGA.vcf
+## pull gams from CHTC and independnet runs, augment and generate vgs:
 
-## map pooled reads to variantgraph
+for j in {39..67}; do for z in `ls C*_"$j"_256*gam`; do ./vg augment -t 24 ./vg augment /media/Summit/zach_vg/minigraph/256_CPB_Mar18.vg "$z" -A Aug_"$z" > "$z".vg; done ; done
+
+ ./vg augment /media/Summit/zach_vg/minigraph/256_CPB_Mar18.vg CPBWGS_62_256_Mar18.gam -A Aug_CPBWGS_62_256_Mar18.gam > CPBWGS_62_256_Mar18.gam.vg
 
 ## surject gams to bams
 
