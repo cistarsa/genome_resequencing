@@ -167,3 +167,30 @@ bed_genotypes_MD1.fam ... done.
 
 ## upload to R, PCAdapt, shared variant sites?
 ```
+## map reads to linear KS reference, generate bam, sorted indexed bam:
+
+
+
+## correct headers
+```
+header1:
+for root in `ls sorted*bam | sed 's/sorted_//g; s/_cleaned.bam//g'`; do for BAM in sorted_CPBWGS_*_cleaned.bam; do if [[ "$BAM" == *"$root"* ]]; then samtools view -H $BAM > "$root"_header.sam; fi; done; done
+
+correct_header
+for root in `ls sorted*bam | sed 's/sorted_//g; s/_cleaned.bam//g'`; do for header in "$root"_header.sam; do if [[ "$header" == *"$header" ]]; then sed "s/1_N_0_TCCGGAGACCTATCCC_TCCGGAGACCTATCCC/$root/" "$header" > corrected_"$header"; fi; done; done 
+
+for root in `ls sorted*bam | sed 's/sorted_//g; s/_cleaned.bam//g'`; do for BAM in sorted_CPBWGS_*_cleaned.bam; do if [[ "$BAM" == *"$root"* ]]; then samtools reheader corrected_"$root"* $BAM > rehead_"$BAM"; fi; done; done 
+```
+
+## generate vcf using samtools mpileup:
+```
+molecularecology@Chimborazo:/media/Summit/88_fastq/cleaned/Linear_Bams$ samtools mpileup -uf F_Kansas_60.fasta -b sorted_80_bams.list | bcftools call -mv > 1_raw.vcf
+```
+
+## chop up F_KS reference, run against all 80 from contigs that have SV's 100/189 contigs
+```
+grep ">" Bubble_All.mfa | grep "F_KS" | sed 's/>/ /g; s/</ /g; s/:/ /g' | awk '{print $2" "$4}' | sed 's/ /\
+/g' | grep "^F_KS" | sort -u >> 100_bubble_contigs.list
+
+```
+## convert multi fasta line to singleline, pull 100 fastas, run on CHTC. 
