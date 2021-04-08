@@ -160,4 +160,9 @@ minMAF 0.1 @ 3:15
 -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -trim 0 -C 50 -baq 1 \
 -minMapQ 30 -minQ 20 -minInd 50 -setMinDepthInd 2 -setMinDepth 120 -setMaxDepth 600 \
 -doCounts 1 -GL 1 -doMajorMinor 1 -doMaf 1 -skipTriallelic 1 -SNP_pval 1e-3 -doGeno 32 -doPost 1
+
+
+./angsd/angsd -P 30 -b plains_pest_bam_noNJ.list -ref F_Kansas_60.fasta -minMAF 0.05 -out Results_test/ALL_Scaffs_pca -doPlink 2 -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -trim 0 -C 50 -baq 1 -minMapQ 30 -minQ 20 -minInd 50 -setMinDepthInd 2 -setMinDepth 120 -setMaxDepth 600 -doCounts 1 -GL 1 -doMajorMinor 1 -doMaf 1 -skipTriallelic 1 -SNP_pval 1e-3 -doGeno 32 -doPost 1
+
+#doVcf segmentation fault
 ```
