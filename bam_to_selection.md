@@ -161,8 +161,29 @@ minMAF 0.1 @ 3:15
 -minMapQ 30 -minQ 20 -minInd 50 -setMinDepthInd 2 -setMinDepth 120 -setMaxDepth 600 \
 -doCounts 1 -GL 1 -doMajorMinor 1 -doMaf 1 -skipTriallelic 1 -SNP_pval 1e-3 -doGeno 32 -doPost 1
 
+@3:35
 
 ./angsd/angsd -P 30 -b plains_pest_bam_noNJ.list -ref F_Kansas_60.fasta -minMAF 0.05 -out Results_test/ALL_Scaffs_pca -doPlink 2 -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -trim 0 -C 50 -baq 1 -minMapQ 30 -minQ 20 -minInd 50 -setMinDepthInd 2 -setMinDepth 120 -setMaxDepth 600 -doCounts 1 -GL 1 -doMajorMinor 1 -doMaf 1 -skipTriallelic 1 -SNP_pval 1e-3 -doGeno 32 -doPost 1
 
 #doVcf segmentation fault
 ```
+
+## try to generate from claire merot
+#source 01_scripts/01_config.sh
+PERCENT_IND=0.5 
+MAX_DEPTH_FACTOR=3
+N_IND=$(wc -l plains_pest_bam_noNJ.list | cut -d " " -f 1)
+MIN_IND_FLOAT=$(echo "($N_IND * $PERCENT_IND)"| bc -l)
+MIN_IND=${MIN_IND_FLOAT%.*} 
+MAX_DEPTH=$(echo "($N_IND * $MAX_DEPTH_FACTOR)" |bc -l)
+
+
+./angsd/angsd -nThreads 25 -nQueueSize 50 \
+-doMaf 1 -dosaf 1 -GL 2 -doGlf 2 -doMajorMinor 1 -doCounts 1 \
+-anc F_Kansas_60.fasta -remove_bads 1 -minMapQ 30 -minQ 20 \
+-minInd $MIN_IND -minMaf 0.05 -setMaxDepth $MAX_DEPTH \
+-b plains_pest_bam_noNJ.list \
+-out Results_CM/all_maf"$MIN_MAF"_pctind"$PERCENT_IND"_maxdepth"$MAX_DEPTH_FACTOR"
+
+
+-nThreads
