@@ -346,3 +346,9 @@ bedtools intersect -a SNPS_within_SVS_positions.list -b Linear_KS_genes_strtstop
 
 for j in `cat sort_uSNPS_within_SVS_within_Genes.list` ; do grep "$j" FKS_linear_genes_Semicolon.list; done | sort -u | sed 's/;/ /g' >> Sig_SNPS_SVS_Genelist.final
 ```
+
+## merge sequences in paf for overlap too
+```
+sort -k1,1 -k2,2n 
+bedtools intersect -i merged_OGS_3paf.overlap.bed
+```
