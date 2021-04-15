@@ -306,6 +306,20 @@ molecularecology@Chimborazo:/media/Summit/88_fastq/cleaned/Linear_Bams/pcangsd2/
 	-> Number of sites retained after filtering: 5186125 
 	[ALL done] cpu-time used =  153811.61 sec
 	[ALL done] walltime used =  97363.00 sec
+	
+	
+	
+## final ~1M
+
+./angsd/angsd -nThreads 28 -nQueueSize 50 -doMaf 1 -dosaf 1 -GL 2 -doGlf 2 -doMajorMinor 1 -doCounts 1 -anc F_Kansas_60.fasta2 -remove_bads 1 -minMapQ 30 -minQ 20 -minInd 57 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 110 -setMaxDepth 550 -skipTriallelic 1 -SNP_pval 1e-3 -b plains_pest_bam_noNJ.list -out Results_CM/all2_maf_05_pctind90_maxdepth_600
+
+-> Sun Apr 11 21:59:53 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 778889268
+	-> Number of sites retained after filtering: 1699104 
+<pre>	[ALL done] cpu-time used =  58847.96 sec
+	[ALL done] walltime used =  27488.00 sec</pre>
+	
 ```
 
 ## rerun beagle file on 13mil:
