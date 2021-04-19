@@ -363,3 +363,14 @@ CPB2015-209A_1.sam
 #/media/Summit/88_fastq/cleaned/Linear_Bams
 
 ## run ANGSD per sample, sliding window selection test
+
+```
+### copy CPB WI and LI and rehead:
+```
+for sam in `ls C*sam`; do for root in `ls C*sam | sed 's/.sam//g'`; do if [[ "$sam" == "$root"* ]]; then java -jar picard.jar ReplaceSamHeader I="$sam" HEADER=F_Kansas.dict O=reheaded_1_"$root".sam; fi; done ;done
+```
+
+## compress and sort
+```
+for sam in `ls rehead*sam`; do for root in `ls C*sam | sed 's/.sam//g'`; do if [[ "$sam" == *"$root"* ]]; then samtools view -b "$sam" > "$root".bam; fi; done; done 
+```
