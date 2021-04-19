@@ -343,4 +343,23 @@ Total Removed:          	52 reads (0.00%) 	12050892 bases (0.25%)
 Result:                 	31469314 reads (100.00%) 	4739823374 bases (99.75%)
 ## map to linear reference Curated.fa in CHTC
 
+## map to reference, rehead (referee)[https://gwct.github.io/referee/walkthrough.html] 
+
+### took around 22hrs:
+```
+molecularecology@Chimborazo:/media/Summit/CHTC/staging/Modern_Museum/fastqs$ for j in `cat root.list`; do for R1 in `ls "$j"*R1*`; do for R2 in `ls "$j"*R2*`; do if [[ "$R1" == "$j"* ]] && [[ "$R2" == "$j"* ]]; then bwa mem -t 28 F_Kansas_60.fasta "$R1" "$R2" > "$j"_1.sam ; fi; done; done; done
+```
+
+## create .dict file for reheading
+
+```
+ java -jar picard.jar CreateSequenceDictionary R=F_Kansas_60.fasta O=F_Kansas.dict
+
+#test on one
+
+for java -jar picard.jar ReplaceSamHeader I=CPB2015-209A_1.sam HEADER=F_Kansas.dict O=new_hd1_CPB2015-209A_1.sam
+CPB2015-209A_1.sam
+
+#/media/Summit/88_fastq/cleaned/Linear_Bams
+
 ## run ANGSD per sample, sliding window selection test
