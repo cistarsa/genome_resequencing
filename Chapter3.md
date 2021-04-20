@@ -373,4 +373,26 @@ for sam in `ls C*sam`; do for root in `ls C*sam | sed 's/.sam//g'`; do if [[ "$s
 ## compress and sort
 ```
 for sam in `ls rehead*sam`; do for root in `ls C*sam | sed 's/.sam//g'`; do if [[ "$sam" == *"$root"* ]]; then samtools view -b "$sam" > "$root".bam; fi; done; done 
+
+#sort
+
+for bam in `ls C*bam`; do for root in `ls C*bam | sed 's/.bam//g'`; do if [[ "$bam" == *"$root"* ]]; then samtools sort "$bam" -o sorted_"$bam"; fi; done; done 
+
+
+```
+
+## test with two: /media/Summit/CHTC/staging/Modern_Museum/fastqs
+```
+ls sorted*209*bam >> test_2.list
+#./angsd/angsd -nThreads 28 -nQueueSize 50 -doMaf 1 -dosaf 1 -GL 2 -doGlf 2 -doMajorMinor 1 -doCounts 1 -anc F_Kansas_60.fasta2 -remove_bads 1 -minMapQ #30 -minQ 20 -minInd 57 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 110 -setMaxDepth 550 -skipTriallelic 1 -SNP_pval 1e-3 -b plains_pest_bam_noNJ.list
+
+
+#851 sites (way high coverage):
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dovcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 -doGlf 2 -doMajorMinor 1 -doCounts 1 -anc F_Kansas_60.fasta -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 110 -setMaxDepth 550 -skipTriallelic 1 -SNP_pval 1e-6 -b test_2.list -out test2
+
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dovcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 -doGlf 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 2 -setMaxDepth 10 -skipTriallelic 1 -SNP_pval 1e-6 -b test_2.list -out test3
+
+## on all 58: 
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dovcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 -doGlf 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 100 -setMaxDepth 1000 -skipTriallelic 1 -SNP_pval 1e-6 -b sorted_bam.list -out WI_LI_58
+
 ```
