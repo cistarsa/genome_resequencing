@@ -395,4 +395,12 @@ ls sorted*209*bam >> test_2.list
 ## on all 58: 
 
 ./angsd/angsd -nThreads 28 -nQueueSize 50 -dovcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 -doGlf 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 2 -setMinDepth 100 -setMaxDepth 1000 -skipTriallelic 1 -SNP_pval 1e-6 -b sorted_bam.list -out WI_LI_58
+
+-> Tue Apr 20 17:37:02 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 779728311
+	-> Number of sites retained after filtering: 28968444 
+	[ALL done] cpu-time used =  97612.86 sec
+	[ALL done] walltime used =  21957.00 sec
+
 ```
