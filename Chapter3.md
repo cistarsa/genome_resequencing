@@ -412,3 +412,8 @@ molecularecology@Chimborazo:/media/Summit/CHTC/staging/Modern_Museum/fastqs$ ./a
 molecularecology@Chimborazo:/media/Summit/88_fastq/cleaned/AUG_GAMS$ bcftools merge -m all *vcf.gz -o 60pest_vg.bcf --force-samples
 
 ```
+
+## RAiSD:
+```
+molecularecology@Chimborazo:/media/Summit/CHTC/staging/Modern_Museum/fastqs/RAiSD/raisd-master$ ./bin/release/RAiSD -n FKS_all_run -I ../../nofields_WI_LI_58.vcf -P -D -A 0.995
+```
