@@ -212,3 +212,42 @@ grep ">" Bubble_All.mfa | grep "F_KS" | sed 's/>/ /g; s/</ /g; s/:/ /g' | awk '{
 
 ```
 ## convert multi fasta line to singleline, pull 100 fastas, run on CHTC. 
+
+
+## Tajima's D for population resequenced data (not with MAF cutoff)
+
+# generate files for tajd (MAF cutoff for outlier SNPs?)
+```
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dobcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minInd 57 -minQ 20 -setMinDepthInd 2 -setMinDepth 110 -setMaxDepth 600 -skipTriallelic 1 -SNP_pval 1e-6 -b plains_pest_bam_noNJ.list -out Results_TajD/plains_pest_57b
+```
+```
+"Results_TajD/plains_pest_57b.bcf"
+	-> Mon May  3 21:50:45 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 778877562
+	-> Number of sites retained after filtering: 3406493 
+	[ALL done] cpu-time used =  57816.18 sec
+	[ALL done] walltime used =  25965.00 sec
+ ```
+## convert output to tajima d AC
+```
+bcftools view <vcf> | vcffixup - | vk tajima ...
+
+#install vcf kit:
+#update python
+https://tech.serhatteker.com/post/2019-12/how-to-install-python38-on-ubuntu/
+
+run using docker
+sudo docker run -it /bin/bash andersenlab/vcf-kit vk
+
+sudo docker run -it -v $(pwd):/test elcortegano/vcfkit bash
+[sudo] password for molecularecology: 
+root@3ab8bdee0a76:/out# vk tajima 50000 12500 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_50k_qtrK.tajD
+
+root@ce1f8801c413:/out# vk tajima 100000 25000 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_100k_qtrK.tajD
+root@ce1f8801c413:/out# vk tajima 100000 25000 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_100k_qtrK.tajD
+root@d9837aaa3efd:/out# vk tajima 5000 1250 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_5k_qtrK.tajD
+root@23f402de5548:/out# vk tajima 100 25 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_100_qtrK.tajD
+root@27d6446fdcd9:/out# vk tajima 1000 250 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_1k_qtrK.tajD
+```
+## top 524 sites with <-2 
