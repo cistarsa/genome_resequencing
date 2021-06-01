@@ -251,3 +251,5 @@ root@23f402de5548:/out# vk tajima 100 25 /test/vcf_fixd_plains_pest_57.vcf > /te
 root@27d6446fdcd9:/out# vk tajima 1000 250 /test/vcf_fixd_plains_pest_57.vcf > /test/vcf_57_1k_qtrK.tajD
 ```
 ## top 524 sites with <-2 
+
+## >50bp 
