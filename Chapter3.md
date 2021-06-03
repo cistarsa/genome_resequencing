@@ -443,3 +443,10 @@ molecularecology@Chimborazo:/media/Summit/CHTC/staging/Modern_Museum/fastqs/RAiS
 
 ```
 
+## pyrho:
+```optimize after generating lookuptables: hyprm_50_LI; hyprm_46_WI
+
+conda activate my-pyrho-env
+for z in `cat last_45_wi.list`; do pyrho optimize --vcffile /media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs/"$z" --windowsize 90 --blockpenalty 15 --tablefile WI_lookuptable_46.hdf --ploidy 2 --outfile optimize_"$z".rho --numthreads 15; done
+
+for z in `cat last_28_li.list`; do pyrho optimize --vcffile /media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs/"$z" --windowsize 90 --blockpenalty 15 --tablefile LI_lookuptable_50.hdf --ploidy 2 --outfile optimize_"$z".rho --numthreads 15; done
