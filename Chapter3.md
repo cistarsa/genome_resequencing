@@ -512,6 +512,32 @@ molecularecology@Chimborazo:/media/molecularecology/Summit/Chapter_3/stairway_pl
 
 
 ## rerun pyrho (with demographic history here)
-
+```
 
 ## run RAiSD on each scaffold using *snps vcf: LI_25_64_snps & WI_28_64_snps
+```
+# break up each scaffold?
+molecularecology@Chimborazo:/media/Summit/CHTC/staging/Modern_Museum/fastqs/RAiSD/raisd-master$ ./bin/release/RAiSD -n FKS_all_run -I ../../nofields_WI_LI_58.vcf -P -D -A 0.995
+
+#remove formats 
+molecularecology@Chimborazo:/media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs$ bcftools annotate -x FORMAT LI_25_64_snps.bcf --threads 10 >> nofield_LI_25_64_snps.vcf
+
+
+WI_28_64_snps.bcf >> nofield_WI_28_64_snps.vcf
+
+## run 
+./bin/release/RAiSD -n New_LI -I ../../nofield_LI_25_64_snps.vcf -P -D -A 0.995
+-n (output prefix)
+-I input
+-P generates R output
+-D Generates a site report, e.g., total, discarded, imputed etc.
+-A 0.995 is probability used, generates Manhattan plot
+
+Command: ./bin/release/RAiSD -n New_LI -I ../../nofield_LI_25_64_snps.vcf -P -D -A 0.995 
+
+ Samples: 25
+ Format:  vcf
+ Total execution time 6960.64531 seconds
+
+ Command: ./bin/release/RAiSD -n New_WI -I ../../nofield_WI_28_64_snps.vcf -P -D -A 0.995 
+
