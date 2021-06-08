@@ -450,3 +450,68 @@ conda activate my-pyrho-env
 for z in `cat last_45_wi.list`; do pyrho optimize --vcffile /media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs/"$z" --windowsize 90 --blockpenalty 15 --tablefile WI_lookuptable_46.hdf --ploidy 2 --outfile optimize_"$z".rho --numthreads 15; done
 
 for z in `cat last_28_li.list`; do pyrho optimize --vcffile /media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs/"$z" --windowsize 90 --blockpenalty 15 --tablefile LI_lookuptable_50.hdf --ploidy 2 --outfile optimize_"$z".rho --numthreads 15; done
+
+```
+## redo WI with 88 samples:
+```
+# dummy:
+./angsd/angsd -b LI_bam.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepth 125 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out LI_25_518 -fold 1 -dobcf 1 -doMajorMinor 1 -doPost 1 -doMaf 1 -dogeno 1 
+
+
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dobcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 3 -setMinDepth 84 -setMaxDepth 280 -skipTriallelic 1 -SNP_pval 1e-6 -b WI_bams_update.list -out WI_28_64_snps
+-> Fri Jun  4 19:40:59 2021
+	-> Arguments and parameters for all analysis are located 
+	in .arg file
+	-> Total number of sites analyzed: 771302985
+	-> Number of sites retained after filtering: 11870483 
+	[ALL done] cpu-time used =  29651.48 sec
+	[ALL done] walltime used =  8906.00 sec
+
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dobcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 3 -setMinDepth 75 -setMaxDepth 250 -skipTriallelic 1 -SNP_pval 1e-6 -b LI_bam.list -out LI_25_64_snps
+-> Fri Jun  4 16:08:27 2021
+-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 764728250
+	-> Number of sites retained after filtering: 12428611 
+	[ALL done] cpu-time used =  33719.42 sec
+	[ALL done] walltime used =  9656.00 sec
+
+# for SFS:
+./angsd/angsd -b LI_bam.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 3 -setMinDepth 75 -setMaxDepth 250 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out LI_25_64 -fold 1
+-> Sat Jun  5 18:42:13 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 749452643
+	-> Number of sites retained after filtering: 152017697 
+	[ALL done] cpu-time used =  57360.21 sec
+	[ALL done] walltime used =  105389.00 sec
+
+## rerun with greater min coverage:
+./angsd/angsd -b LI_bam.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 125 -setMaxDepth 250 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out LI_25_67 -fold 1
+
+./angsd/angsd -b WI_bams_update.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 3 -setMinDepth 84 -setMaxDepth 250 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out WI_28_64_pruned_sfs -fold 1
+-> Sat Jun  5 19:34:57 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 756084479
+	-> Number of sites retained after filtering: 136785813 
+	[ALL done] cpu-time used =  61582.83 sec
+	[ALL done] walltime used =  108592.00 sec
+	
+## rerun with greater min coverage:
+./angsd/angsd -b WI_bams_update.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 140 -setMaxDepth 280 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out WI_28_67_pruned_sfs -fold 1
+
+
+## redo SFS for these folded spectra now:
+./angsd/misc/realSFS WI_28_64_pruned_sfs.saf.idx
+130220822.903196 1745838.471290 1452524.392505 89.870898 824163.412282 545503.179285 154422.886774 48050.092423 278924.805313 219224.322110 189897.613812 95469.700656 47534.789611 107072.892167 78181.479312 107651.174927 78945.956195 59517.093802 51004.237046 74623.769265 28323.249887 68545.986047 47160.651103 66065.441200 31895.994982 41708.979510 30586.404091 68150.817959 23912.432259 
+
+./angsd/misc/realSFS LI_25_64.saf.idx
+144866642.296978 2025697.410711 1028039.426052 1024572.644550 73074.709766 825372.501435 140744.267764 232395.573115 231575.522661 250249.022986 100275.666490 119540.505915 165723.188058 72277.109795 113787.311823 115171.627191 32176.285868 110849.173735 35545.151758 158546.538284 2731.271602 39692.169016 124442.519525 23208.967912 60502.295761 44863.841142
+
+## rerun stairway plot WIblueprint
+(delete first value)
+molecularecology@Chimborazo:/media/molecularecology/Summit/Chapter_3/stairway_plot_v2.1.1$ java -cp stairway_plot_es/ Stairbuilder WI.blueprint
+
+
+## rerun pyrho (with demographic history here)
+
+
+## run RAiSD on each scaffold using *snps vcf: LI_25_64_snps & WI_28_64_snps
