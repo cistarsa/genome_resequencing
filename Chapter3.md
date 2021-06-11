@@ -487,6 +487,11 @@ for z in `cat last_28_li.list`; do pyrho optimize --vcffile /media/molecularecol
 ## rerun with greater min coverage:
 ./angsd/angsd -b LI_bam.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 125 -setMaxDepth 250 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out LI_25_67 -fold 1
 
+-> Tue Jun  8 17:17:36 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 749452643
+	-> Number of sites retained after filtering: 2421857 
+	
 ./angsd/angsd -b WI_bams_update.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 3 -setMinDepth 84 -setMaxDepth 250 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out WI_28_64_pruned_sfs -fold 1
 -> Sat Jun  5 19:34:57 2021
 	-> Arguments and parameters for all analysis are located in .arg file
@@ -497,6 +502,11 @@ for z in `cat last_28_li.list`; do pyrho optimize --vcffile /media/molecularecol
 	
 ## rerun with greater min coverage:
 ./angsd/angsd -b WI_bams_update.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 140 -setMaxDepth 280 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out WI_28_67_pruned_sfs -fold 1
+-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 756084479
+	-> Number of sites retained after filtering: 1940286 
+	[ALL done] cpu-time used =  54910.11 sec
+	[ALL done] walltime used =  107761.00 sec
 
 
 ## redo SFS for these folded spectra now:
@@ -505,6 +515,12 @@ for z in `cat last_28_li.list`; do pyrho optimize --vcffile /media/molecularecol
 
 ./angsd/misc/realSFS LI_25_64.saf.idx
 144866642.296978 2025697.410711 1028039.426052 1024572.644550 73074.709766 825372.501435 140744.267764 232395.573115 231575.522661 250249.022986 100275.666490 119540.505915 165723.188058 72277.109795 113787.311823 115171.627191 32176.285868 110849.173735 35545.151758 158546.538284 2731.271602 39692.169016 124442.519525 23208.967912 60502.295761 44863.841142
+
+./angsd/misc/realSFS LI_25_67.saf.idx
+2172805.170480 93502.975072 47197.913153 25570.061219 18664.781578 10405.010159 9933.615111 5318.223989 6974.010255 2078.184251 5302.306359 2183.856913 1997.569976 3278.354482 445.390105 3256.638358 839.878270 1158.949238 1483.137017 1490.535563 1224.322593 1515.039821 622.245344 1427.021917 674.667181 2507.141596
+
+./angsd/misc/realSFS WI_28_67_pruned_sfs.saf.idx
+1753081.088420 63566.982860 36336.191748 20012.805936 13067.244239 8956.730560 8804.218274 2252.888625 6568.686253 1843.315248 3122.986048 2036.498996 2957.371839 901.732853 2078.892155 1046.905746 1332.730411 827.028026 1360.362979 1102.825709 1289.585854 637.691565 550.160954 1673.181141 573.255905 298.487313 449.488895 1331.887789 2224.773659 
 
 ## rerun stairway plot WIblueprint
 (delete first value)
@@ -540,4 +556,32 @@ Command: ./bin/release/RAiSD -n New_LI -I ../../nofield_LI_25_64_snps.vcf -P -D 
  Total execution time 6960.64531 seconds
 
  Command: ./bin/release/RAiSD -n New_WI -I ../../nofield_WI_28_64_snps.vcf -P -D -A 0.995 
+```
+## run angsd for folded with no upper limit, get more sites
+```molecularecology@Chimborazo:/media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs$ ./angsd/angsd -b WI_bams_update.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 140 -setMaxDepth 2800 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out WI_28_69_pruned_sfs -fold 1
 
+ Thu Jun 10 20:56:06 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 756084479
+	-> Number of sites retained after filtering: 2950966 
+	
+molecularecology@Chimborazo:/media/molecularecology/Summit/CHTC/staging/Modern_Museum/fastqs$ ./angsd/angsd -b LI_bam.list -gl 2 -anc F_Kansas_60.fasta -ref F_Kansas_60.fasta -rf rf_agenic_regions_FKS.list -dosaf 1 -doCounts 1 -setMinDepthInd 5 -setMinDepth 125 -setMaxDepth 2500 -baq 1 -C 50 -minMapQ 30 -minQ 20 -P 20 -out LI_25_69 -fold 1
+
+-> Thu Jun 10 19:56:50 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 749452643
+	-> Number of sites retained after filtering: 3487833 
+
+./angsd/misc/realSFS WI_28_69_pruned_sfs.saf.idx
+2704318.109317 86382.569709 45679.342434 25629.031310 18327.176978 10734.271206 10906.643441 2735.517904 7863.275736 4764.908034 2513.636641 2427.971970 2568.808915 3703.444623 1711.832291 1585.193135 1757.211743 1027.068678 1734.443771 2293.723041 465.361128 544.124323 2753.978644 673.377248 1409.189501 174.773558 35.318316 1390.446658 4847.249748
+
+./angsd/misc/realSFS LI_25_69.saf.idx
+3147255.393600 134795.770261 62369.120939 36468.022746 22161.546664 15405.173744 11367.740804 8087.595641 7229.199204 5188.755748 4950.445953 3063.663642 3492.626614 2780.255365 2807.263252 2080.772292 2017.649145 2013.433219 1503.158263 2214.150637 1161.956133 1690.546003 1525.059647 1957.690660 1509.217856 2732.791972
+```
+
+## dadi joint, folded sfs
+
+```
+-b WI_bams_update.list & LI_bam.list
+
+./angsd/angsd -nThreads 28 -nQueueSize 50 -dobcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 3 -setMinDepth 84 -setMaxDepth 2800 -skipTriallelic 1 -SNP_pval 1e-6 -b WI_LI_update_bams.list -out WI_LI_611_snps
