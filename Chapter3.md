@@ -585,3 +585,11 @@ molecularecology@Chimborazo:/media/molecularecology/Summit/CHTC/staging/Modern_M
 -b WI_bams_update.list & LI_bam.list
 
 ./angsd/angsd -nThreads 28 -nQueueSize 50 -dobcf 1 -doMaf 1 -dopost 1 -dosaf 1 -gl 2 --ignore-RG 0 -dogeno 1 -anc F_Kansas_60.fasta -doGlf 2 -doMajorMinor 1 -doCounts 1 -remove_bads 1 -minMapQ 30 -minQ 20 -minMaf 0.05 -setMinDepthInd 3 -setMinDepth 84 -setMaxDepth 2800 -skipTriallelic 1 -SNP_pval 1e-6 -b WI_LI_update_bams.list -out WI_LI_611_snps
+
+
+```
+-> Fri Jun 11 20:47:26 2021
+	-> Arguments and parameters for all analysis are located in .arg file
+	-> Total number of sites analyzed: 778608467
+	-> Number of sites retained after filtering: 27647075 
+```
