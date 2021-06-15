@@ -593,3 +593,28 @@ molecularecology@Chimborazo:/media/molecularecology/Summit/CHTC/staging/Modern_M
 	-> Total number of sites analyzed: 778608467
 	-> Number of sites retained after filtering: 27647075 
 ```
+
+
+```
+## break up vcf for pyrho:
+```
+sed -i 's/_/-/g' WI_28_64_snps.bcf
+sed -i 's/_/-/g' LI_25_64_snps.bcf
+
+bgzip -c WI_28_64_snps.bcf > WI_28_64_snps.bcf.vcf.gz
+bgzip -c LI_25_64_snps.bcf > LI_25_64_snps.bcf.vcf.gz
+
+tabix -p vcf WI_28_64_snps.bcf.vcf.gz
+tabix -p vcf LI_25_64_snps.bcf.vcf.gz
+
+for z in `cat wi_scaffold.list`; do echo tabix -h LI_25_64_snps.bcf.vcf.gz "$z" > LI_"$z".vcf
+for z in `cat wi_scaffold.list`; do echo tabix -h WI_28_64_snps.bcf.vcf.gz "$z" > WI_"$z".vcf
+
+
+```
+# optimize
+```
+pyrho optimize --vcffile <data> --windowsize <w> --blockpenalty <bpen> \
+--tablefile <make_table_output> --ploidy <ploidy> --outfile <output_file> \
+--numthreads <par>
+
